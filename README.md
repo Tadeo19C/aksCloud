@@ -1,6 +1,6 @@
 # 🚀 Despliegue de Blog Ghost en Azure Kubernetes Service (AKS) con Terraform
 
-¡Bienvenido a este proyecto de Infraestructura como Código (IaC)! Aquí demostramos cómo desplegar una aplicación web moderna y escalable (Ghost CMS) utilizando las mejores prácticas de DevOps.
+¡Bienvenido a este proyecto de Infraestructura como Código (IaC)! Aquí demostramos cómo desplegar una aplicación web moderna y escalable (Ghost CMS) utilizando las mejores prácticas.
 
 ![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white) ![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white) ![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white) ![Ghost](https://img.shields.io/badge/ghost-%2315171A.svg?style=for-the-badge&logo=ghost&logoColor=white)
 
