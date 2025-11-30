@@ -1,4 +1,6 @@
-locals {
+ndica que Terraform está intentando usar la suscripción antigua (493b052c...) en lugar de la nueva (dee699d6...).
+
+Esto sucede porque locals {
   rg_name   = "${var.prefix}-rg"
   vnet_name = "${var.prefix}-vnet-wu2"
   aks_name  = "${var.prefix}-aks"
