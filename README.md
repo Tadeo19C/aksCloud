@@ -95,4 +95,4 @@ terraform destroy -auto-approve
 ```
 
 ---
-Hecho con ❤️ por Tadeo para la clase de Kubernetes.
+
