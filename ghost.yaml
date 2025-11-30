@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mysql
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:8.0
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "supersecretpassword"
+        - name: MYSQL_DATABASE
+          value: "ghost"
+        - name: MYSQL_USER
+          value: "ghost"
+        - name: MYSQL_PASSWORD
+          value: "ghostpassword"
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ghost-content-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost
+spec:
+  selector:
+    matchLabels:
+      app: ghost
+  template:
+    metadata:
+      labels:
+        app: ghost
+    spec:
+      containers:
+      - image: ghost:5
+        name: ghost
+        env:
+        - name: database__client
+          value: "mysql"
+        - name: database__connection__host
+          value: "mysql"
+        - name: database__connection__user
+          value: "ghost"
+        - name: database__connection__password
+          value: "ghostpassword"
+        - name: database__connection__database
+          value: "ghost"
+        - name: url
+          value: "http://localhost"
+        ports:
+        - containerPort: 2368
+          name: ghost
+        volumeMounts:
+        - name: ghost-persistent-storage
+          mountPath: /var/lib/ghost/content
+      volumes:
+      - name: ghost-persistent-storage
+        persistentVolumeClaim:
+          claimName: ghost-content-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ghost
+spec:
+  type: LoadBalancer
+  selector:
+    app: ghost
+  ports:
+    - port: 80
+      targetPort: 2368
